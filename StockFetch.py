@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class Stocks:
-    ''' Class for fetching and processing stock data from NASDAQ '''
+    ''' Class for fetching and processing stock data from NASDAQ and stuff '''
     
     def __init__(self):
         self.symbol_list = []
