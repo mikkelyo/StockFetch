@@ -1,4 +1,4 @@
-import StockFetch as sf
+import StockFetch_Daniel as sf
 
 if __name__ == '__main__':
 
