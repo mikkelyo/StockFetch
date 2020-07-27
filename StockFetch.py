@@ -21,14 +21,20 @@ class Stocks:
         self.processed_data = {}
         
     def symbol_init(self, input_list):
+        '''Input desired symbols as a string and with a space separating them'''
+        
         self.symbol_list = input_list.split()
         self.process(self.symbol_list)
         return self.symbol_list
     
     def symbol_show(self):
+        '''Shows all desired symbols'''
+        
         print(self.symbol_list)
         
     def get_dataframe(self):
+        '''Outputs the dataframe with all data to a variable'''
+        
         df = self.processed_data
         return df
     
@@ -66,6 +72,8 @@ class Stocks:
         return output_data 
         
     def process(self,data_range='1d', data_interval='1m'):
+        '''Processes all data from symbols in symbol_list'''
+        
         for symbol in self.symbol_list:
             try:
                 self.processed_data[str(symbol)]=self.fetch(str(symbol),
@@ -73,25 +81,39 @@ class Stocks:
             except KeyError:
                 print('One or more symbols are non-existant')
                 pass
+            
+    def visualize_all(self):
+        '''Plots all current symbols - individual plotter to be added'''
+        
+        try:
+            for key in self.processed_data:
+                
+                plt.figure(key,figsize=[12,3])
+                plt.plot(self.processed_data[key].reset_index().Datetime.index,self.processed_data[key]['open'], alpha = 0.9, linewidth = 2 , label=key)
+                plt.title(key)
+                plt.grid(which='both')
+                plt.ylabel('Stock price [$]')
+                plt.xlabel('Date')
+                ticks = list(np.arange(0,len(self.processed_data[key]),len(self.processed_data[key])/15))
+                ticks.append(len(self.processed_data[key])-1)
+                ticks = [int(round(i)) for i in ticks] #kinda silly way to make ticks include first and last tick - also is this precise enough?
+                labels = self.processed_data[key].index[ticks]
+                plt.xticks( ticks=ticks , labels=labels , rotation = 'vertical')
+        
+        except AttributeError:
+            print(key,'was not plotted due to data missing - check if symbol exists')
+            
     
     
 if __name__ == '__main__':
     
     x = Stocks()
+#    x.symbol_init('DIS')
     x.symbol_init('DIS AAPL AMD GOOGL SYMC')
+    x.process(data_range='1mo',data_interval='1h')
+    x.visualize_all()
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    data = x.get_dataframe()
+#    data = x.get_dataframe()
 
     
     
